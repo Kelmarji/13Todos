@@ -4,15 +4,14 @@ import TaskList from "../TaskList";
 import Footer from "../Footer";
 
 export default class App extends Component {
+
+  maxId = 100
   state = {
     todosData: [
-      { label: "do react app", id: 1 },
-      { label: "drink coffee", id: 0 },
     ],
   };
 
   deletedItem = (id) => {
-    console.log(id);
     this.setState(({ todosData }) => {
       const newTodoData = todosData.filter((item) => item.id !== id);
       return {
@@ -21,11 +20,24 @@ export default class App extends Component {
     });
   };
 
+  addItem = (item) => {
+    const newItem = {
+      label: item, 
+      id: this.maxId++
+    }
+    this.setState(({todosData})=>{
+      const newArr = [...todosData,newItem]
+      return {
+      todosData: newArr
+      }
+    })
+  }
+
   render() {
     const { todosData } = this.state;
     return (
       <div className="todoapp">
-        <NewTaskForm />
+         <NewTaskForm addItem={this.addItem} />
         <TaskList todoList={todosData} onDeleted={this.deletedItem} />
         <Footer todoList={todosData} />
       </div>

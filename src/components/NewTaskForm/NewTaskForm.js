@@ -5,10 +5,17 @@ export default class NewTaskForm extends Component {
   render() {
     return (
       <header className="header">
-        <h1>KelmarProd.</h1>
-        <input
+        <h1>Todos</h1>
+        <input 
+          onKeyDown={(e) => {
+            if (e.key === 'Enter' && e.target.value.length > 0) 
+          {
+            this.props.addItem(e.target.value);
+            e.target.value = ''
+          }}
+          }
           className="new-todo"
-          placeholder="Wut need to be done?"
+          placeholder="What needs to be done?"
           autoFocus
         ></input>
       </header>
