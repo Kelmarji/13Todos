@@ -1,7 +1,16 @@
 import React, { Component } from "react";
 import "./TaskFilter.css";
+import PropTypes from "prop-types";
 
 export default class TaskFilter extends Component {
+  static defaultProps = {
+    filterTodos: (e) => console.log("FilterFooter"),
+  };
+
+  static propTypes = {
+    filterTodos: PropTypes.func,
+  };
+
   render() {
     const { filterTodos } = this.props;
     return (

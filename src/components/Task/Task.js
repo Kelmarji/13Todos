@@ -3,7 +3,8 @@ import "./Task.css";
 
 export default class Task extends Component {
   render() {
-    const { label, id, onDeleted, onToggleCompleted, completed } = this.props;
+    const { label, id, onDeleted, onToggleCompleted, completed, time } =
+      this.props;
     let status = "";
     if (completed) status += "completed";
     let check = false;
@@ -19,7 +20,7 @@ export default class Task extends Component {
           ></input>
           <label htmlFor="checkbox" key={"todos" + id}>
             <span className="description">{label}</span>
-            <span className="created">created {new Date().getMinutes()}</span>
+            <span className="created">created {time} ago</span>
           </label>
         </div>
         <div className="right-side">

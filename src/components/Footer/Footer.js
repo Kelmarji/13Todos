@@ -1,8 +1,21 @@
 import React, { Component } from "react";
 import "./Footer.css";
 import TaskFilter from "../TasksFilter";
+import PropTypes from "prop-types";
 
 export default class Footer extends Component {
+  static defaultProps = {
+    todoList: [],
+    clearCompleted: (e) => console.log("ClearCompleted"),
+    filterTodos: (e) => console.log("filterFooter"),
+  };
+
+  static propTypes = {
+    todoList: PropTypes.array,
+    clearCompleted: PropTypes.func,
+    filterTodos: PropTypes.func,
+  };
+
   render() {
     const { todoList, clearCompleted, filterTodos } = this.props;
     const completedTodo = todoList.filter((item) => item.completed);
@@ -19,5 +32,3 @@ export default class Footer extends Component {
     );
   }
 }
-
-// сделать два стэйта 1 анфильтеред 2 фильтеред и меня фильтер используя анфильтеред

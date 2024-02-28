@@ -7,10 +7,9 @@ export default class App extends Component {
   maxId = 100;
   state = {
     todosData: [
-      { label: "добавление задач", id: 0, completed: false },
-      { label: "логикa фильтрации", id: 1, completed: false },
-      { label: "удаления всех Completed", id: 2, completed: false },
-      { label: "логику для счетчика", id: 3, completed: false },
+      this.newItem("propsType"),
+      this.newItem("errors"),
+      this.newItem("defaultProps"),
     ],
     statusFilter: false,
     filteredTodos: [],
@@ -48,22 +47,31 @@ export default class App extends Component {
     });
   };
 
-  addItem = (item) => {
+  newItem(item) {
     const newItem = {
       label: item,
       id: this.maxId++,
+      time: new Date().getTime(),
     };
-    this.setState(({ todosData }) => {
-      const newArr = [...todosData, newItem];
+    return newItem;
+  }
+
+  addItem = (item) => {
+    this.setState(({ todosData, filteredTodos }) => {
+      const newArr = [...todosData, this.newItem(item)];
       return {
         todosData: newArr,
+        filteredTodos: newArr,
       };
     });
   };
 
   onToggleCompleted = (id) => {
-    this.setState(({ todosData }) => {
-      return { todosData: this.changeProp(todosData, id, "completed") };
+    this.setState(({ todosData, filteredTodos }) => {
+      return {
+        todosData: this.changeProp(todosData, id, "completed"),
+        filterTodos: this.changeProp(filteredTodos, id, "completed"),
+      };
     });
   };
 
