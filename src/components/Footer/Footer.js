@@ -1,14 +1,16 @@
-import React, { Component } from "react";
-import "./Footer.css";
-import TaskFilter from "../TasksFilter";
-import PropTypes from "prop-types";
+import React, { Component } from 'react';
+import './Footer.css';
+import PropTypes from 'prop-types';
+
+import TaskFilter from '../TasksFilter';
 
 export default class Footer extends Component {
-  static defaultProps = {
-    todoList: [],
-    clearCompleted: (e) => console.log("ClearCompleted"),
-    filterTodos: (e) => console.log("filterFooter"),
-  };
+  constructor(props) {
+    super(props);
+    this.state = {
+      todoList: [],
+    };
+  }
 
   static propTypes = {
     todoList: PropTypes.array,
@@ -21,9 +23,7 @@ export default class Footer extends Component {
     const completedTodo = todoList.filter((item) => item.completed);
     return (
       <footer className="footer">
-        <span className="todo-count">
-          {todoList.length - completedTodo.length} items left
-        </span>
+        <span className="todo-count">{todoList.length - completedTodo.length} items left</span>
         <TaskFilter filterTodos={filterTodos} />
         <button className="clear-completed" onClick={clearCompleted}>
           Clear completed

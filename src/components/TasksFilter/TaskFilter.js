@@ -1,12 +1,8 @@
-import React, { Component } from "react";
-import "./TaskFilter.css";
-import PropTypes from "prop-types";
+import React, { Component } from 'react';
+import './TaskFilter.css';
+import PropTypes from 'prop-types';
 
 export default class TaskFilter extends Component {
-  static defaultProps = {
-    filterTodos: (e) => console.log("FilterFooter"),
-  };
-
   static propTypes = {
     filterTodos: PropTypes.func,
   };
@@ -16,13 +12,13 @@ export default class TaskFilter extends Component {
     return (
       <ul className="filters">
         <li>
-          <button onClick={() => filterTodos("All")}>All</button>
+          <button onClick={() => filterTodos('All')}>All</button>
         </li>
         <li>
-          <button onClick={() => filterTodos("Active")}>Active</button>
+          <button onClick={() => filterTodos('Active')}>Active</button>
         </li>
         <li>
-          <button onClick={() => filterTodos("Completed")}>Completed</button>
+          <button onClick={() => filterTodos('Completed')}>Completed</button>
         </li>
       </ul>
     );

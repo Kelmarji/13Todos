@@ -1,16 +1,15 @@
-import React, { Component } from "react";
-import NewTaskForm from "../NewTaskForm";
-import TaskList from "../TaskList";
-import Footer from "../Footer";
+/* eslint-disable class-methods-use-this */
+import React, { Component } from 'react';
+
+import NewTaskForm from '../NewTaskForm';
+import TaskList from '../TaskList';
+import Footer from '../Footer';
 
 export default class App extends Component {
   maxId = 100;
+
   state = {
-    todosData: [
-      this.newItem("propsType"),
-      this.newItem("errors"),
-      this.newItem("defaultProps"),
-    ],
+    todosData: [],
     statusFilter: false,
     filteredTodos: [],
   };
@@ -24,17 +23,17 @@ export default class App extends Component {
 
   filterTodos = (text) => {
     let newTodosData;
-    if (text === "Completed") {
+    if (text === 'Completed') {
       newTodosData = this.state.todosData.filter((item) => item.completed);
-    } else if (text === "Active") {
+    } else if (text === 'Active') {
       newTodosData = this.state.todosData.filter((item) => !item.completed);
-    } else if (text === "All") {
+    } else if (text === 'All') {
       newTodosData = this.state.todosData;
     }
 
     this.setState({
       filteredTodos: newTodosData,
-      statusFilter: text !== "All",
+      statusFilter: text !== 'All',
     });
   };
 
@@ -50,7 +49,7 @@ export default class App extends Component {
   newItem(item) {
     const newItem = {
       label: item,
-      id: this.maxId++,
+      id: this.state.todosData.length + 1,
       time: new Date().getTime(),
     };
     return newItem;
@@ -59,9 +58,10 @@ export default class App extends Component {
   addItem = (item) => {
     this.setState(({ todosData, filteredTodos }) => {
       const newArr = [...todosData, this.newItem(item)];
+      const newFilArr = [...filteredTodos, this.newItem(item)];
       return {
         todosData: newArr,
-        filteredTodos: newArr,
+        filteredTodos: newFilArr,
       };
     });
   };
@@ -69,8 +69,8 @@ export default class App extends Component {
   onToggleCompleted = (id) => {
     this.setState(({ todosData, filteredTodos }) => {
       return {
-        todosData: this.changeProp(todosData, id, "completed"),
-        filterTodos: this.changeProp(filteredTodos, id, "completed"),
+        todosData: this.changeProp(todosData, id, 'completed'),
+        filterTodos: this.changeProp(filteredTodos, id, 'completed'),
       };
     });
   };
@@ -94,11 +94,7 @@ export default class App extends Component {
           onToggleCompleted={this.onToggleCompleted}
           todoList={statusFilter ? filteredTodos : todosData}
         />
-        <Footer
-          todoList={todosData}
-          clearCompleted={this.clearCompleted}
-          filterTodos={this.filterTodos}
-        />
+        <Footer todoList={todosData} clearCompleted={this.clearCompleted} filterTodos={this.filterTodos} />
       </div>
     );
   }
