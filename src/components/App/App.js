@@ -21,6 +21,13 @@ export default class App extends Component {
     return [...arr.slice(0, itemId), newItem, ...arr.slice(itemId + 1)];
   };
 
+  changeName = (arr, id, prop, newText) => {
+    const itemId = arr.findIndex((item) => item.id === id);
+    const oldItem = arr[itemId];
+    const newItem = { ...oldItem, [prop]: newText, completed: false };
+    return [...arr.slice(0, itemId), newItem, ...arr.slice(itemId + 1)];
+  };
+
   filterTodos = (text) => {
     let newTodosData;
     if (text === 'Completed') {
@@ -51,6 +58,7 @@ export default class App extends Component {
       label: item,
       id: this.state.todosData.length + 1,
       time: new Date().getTime(),
+      edit: false,
     };
     return newItem;
   }
@@ -84,14 +92,44 @@ export default class App extends Component {
     });
   };
 
+  onToggleEdit = (id) => {
+    this.setState(({ todosData, filteredTodos }) => {
+      return {
+        todosData: this.changeProp(todosData, id, 'edit'),
+        filterTodos: this.changeProp(filteredTodos, id, 'edit'),
+      };
+    });
+  };
+
+  rename = (id, newText) => {
+    const itemId = this.state.todosData.findIndex((item) => item.id === id);
+    if (itemId !== -1) {
+      this.setState(({ todosData, filteredTodos }) => {
+        return {
+          todosData: this.changeName(todosData, id, 'label', newText),
+          filterTodos: this.changeName(filteredTodos, id, 'label', newText),
+        };
+      });
+      this.setState(({ todosData, filteredTodos }) => {
+        return {
+          todosData: this.changeProp(todosData, id, 'edit'),
+          filteredTodos: this.changeProp(filteredTodos, id, 'edit'),
+        };
+      });
+    }
+  };
+
   render() {
     const { todosData, statusFilter, filteredTodos } = this.state;
     return (
       <div className="todoapp">
         <NewTaskForm addItem={this.addItem} />
         <TaskList
+          rename={this.rename}
+          logId={this.logId}
           onDeleted={this.deletedItem}
           onToggleCompleted={this.onToggleCompleted}
+          onToggleEdit={this.onToggleEdit}
           todoList={statusFilter ? filteredTodos : todosData}
         />
         <Footer todoList={todosData} clearCompleted={this.clearCompleted} filterTodos={this.filterTodos} />

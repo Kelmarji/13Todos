@@ -17,14 +17,14 @@ export default class TaskList extends Component {
   };
 
   render() {
-    const { todoList, onDeleted, onToggleCompleted } = this.props;
+    const { todoList, onDeleted, onToggleCompleted, onToggleEdit, rename } = this.props;
 
-    const elements = todoList.map(({ label, id, completed, time }) => {
+    const elements = todoList.map(({ label, id, completed, time, edit }) => {
       return (
         <Task
           label={label}
           key={id}
-          id={`t${id}`}
+          id={id}
           time={formatDistanceToNow(time)}
           onDeleted={() => {
             onDeleted(id);
@@ -32,6 +32,11 @@ export default class TaskList extends Component {
           onToggleCompleted={() => {
             onToggleCompleted(id);
           }}
+          onToggleEdit={() => {
+            onToggleEdit(id);
+          }}
+          rename={rename}
+          edited={edit}
           completed={completed}
         />
       );

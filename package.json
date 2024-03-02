@@ -19,6 +19,19 @@
     "lint-staged": "^15.2.2",
     "prettier": "^3.2.5",
     "prop-types": "^15.8.1",
+    "babel-eslint": "^10.1.0",
+    "date-fns": "^3.3.1",
+    "eslint": "^8.57.0",
+    "eslint-config-airbnb": "^19.0.4",
+    "eslint-config-prettier": "^9.1.0",
+    "eslint-plugin-import": "^2.29.1",
+    "eslint-plugin-jsx-a11y": "^6.8.0",
+    "eslint-plugin-react": "^7.33.2",
+    "eslint-plugin-react-hooks": "^4.6.0",
+    "husky": "^9.0.11",
+    "lint-staged": "^15.2.2",
+    "prettier": "^3.2.5",
+    "prop-types": "^15.8.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-scripts": "5.0.1",
@@ -39,7 +52,11 @@
     }
   },
   "lint-staged": {
-    "*.js": ["npm run lint", "format", "git add"]
+    "*.js": [
+      "npm run lint",
+      "format",
+      "git add"
+    ]
   },
   "eslintConfig": {
     "extends": [
@@ -58,5 +75,8 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "eslint-plugin-prettier": "^5.1.3"
   }
 }

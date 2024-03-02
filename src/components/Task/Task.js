@@ -3,22 +3,37 @@ import './Task.css';
 
 export default class Task extends Component {
   render() {
-    const { label, id, onDeleted, onToggleCompleted, completed, time } = this.props;
-    let status = '';
-    if (completed) status += 'completed';
-    let check = false;
-    if (completed) check = true;
-    return (
-      <li key={`todos${id}`} id={id} className={status}>
+    const { label, id, onDeleted, onToggleCompleted, completed, time, edited, onToggleEdit, rename } = this.props;
+
+    return edited ? (
+      <li key={`todos${id}`} id={id} className="editing">
+        <div className="view" onClick={onToggleCompleted}>
+          <input
+            type="text"
+            className="edit"
+            onKeyDown={(e) => {
+              if (e.key === 'Enter') {
+                rename(id, e.target.value);
+              }
+            }}
+          ></input>
+        </div>
+        <div className="right-side">
+          <button className="icon icon-edit" onClick={onToggleEdit}></button>
+          <button className="icon icon-destroy" onClick={onDeleted}></button>
+        </div>
+      </li>
+    ) : (
+      <li key={`todos${id}`} id={id} className={completed ? 'completed' : ''}>
         <div className="view left-side" onClick={onToggleCompleted}>
-          <input className="toggle" type="checkbox" checked={check} onChange={onToggleCompleted}></input>
+          <input className="toggle" type="checkbox" checked={completed} onChange={onToggleCompleted}></input>
           <label htmlFor="checkbox" key={`todos${id}`}>
             <span className="description">{label}</span>
             <span className="created">created {time} ago</span>
           </label>
         </div>
         <div className="right-side">
-          <button className="icon icon-edit"></button>
+          <button className="icon icon-edit" onClick={onToggleEdit}></button>
           <button className="icon icon-destroy" onClick={onDeleted}></button>
         </div>
       </li>
