@@ -14,7 +14,7 @@ export default class NewTaskForm extends Component {
             }
           }}
           className="new-todo"
-          placeholder="do?"
+          placeholder="What needs to be done?"
           autoFocus
         ></input>
       </header>
