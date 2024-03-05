@@ -43,7 +43,6 @@ export default class App extends Component {
       statusFilter: text !== 'All',
       filter: text,
     });
-    console.log(this.state.filter);
   };
 
   deletedItem = (id) => {
@@ -62,7 +61,6 @@ export default class App extends Component {
       time: new Date().getTime(),
       edit: false,
     };
-    console.log(newItem.id);
     return newItem;
   }
 
@@ -71,7 +69,6 @@ export default class App extends Component {
       const maxIdNewNumber = maxId + 1;
       const newArr = [...todosData, this.newItem(item)];
       const newFilArr = [...filteredTodos, this.newItem(item)];
-      console.log(newArr, newFilArr);
       return {
         todosData: newArr,
         filteredTodos: newArr,
