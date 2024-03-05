@@ -1,2 +1,3 @@
-https://todos-kelmars-projects.vercel.app/
-https://todos-woad-gamma.vercel.app/
+https://todosrework.vercel.app/
+https://todosrework-kelmars-projects.vercel.app/
+https://todosrework-kelmarji-kelmars-projects.vercel.app/
