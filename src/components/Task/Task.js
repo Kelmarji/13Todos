@@ -26,10 +26,16 @@ export default class Task extends Component {
     ) : (
       <li key={`todos${id}`} id={id} className={completed ? 'completed' : ''}>
         <div className="view left-side" onClick={onToggleCompleted}>
-          <input className="toggle" type="checkbox" checked={completed} onChange={onToggleCompleted}></input>
+          <input
+            className="toggle"
+            type="checkbox"
+            checked={completed}
+            onChange={onToggleCompleted}
+            onClick={onToggleCompleted}
+          ></input>
           <label htmlFor="checkbox" key={`todos${id}`}>
             <span className="description">{label}</span>
-            <span className="created">created {time} ago</span>
+            <span className="created">created {time}</span>
           </label>
         </div>
         <div className="right-side">

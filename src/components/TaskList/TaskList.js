@@ -1,9 +1,8 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { formatDistanceToNow } from 'date-fns';
 
 import Task from '../Task/Task';
-
-const { formatDistanceToNow } = require('date-fns');
 
 export default class TaskList extends Component {
   static defaultProps = {
@@ -18,14 +17,13 @@ export default class TaskList extends Component {
 
   render() {
     const { todoList, onDeleted, onToggleCompleted, onToggleEdit, rename } = this.props;
-
     const elements = todoList.map(({ label, id, completed, time, edit }) => {
       return (
         <Task
           label={label}
           key={id}
           id={id}
-          time={formatDistanceToNow(time)}
+          time={formatDistanceToNow(time, { includeSeconds: true, addSuffix: true })}
           onDeleted={() => {
             onDeleted(id);
           }}

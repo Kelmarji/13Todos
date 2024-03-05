@@ -19,12 +19,12 @@ export default class Footer extends Component {
   };
 
   render() {
-    const { todoList, clearCompleted, filterTodos } = this.props;
+    const { todoList, clearCompleted, filterTodos, filterSts } = this.props;
     const completedTodo = todoList.filter((item) => item.completed);
     return (
       <footer className="footer">
         <span className="todo-count">{todoList.length - completedTodo.length} items left</span>
-        <TaskFilter filterTodos={filterTodos} />
+        <TaskFilter filterStatus={filterSts} filterTodos={filterTodos} />
         <button className="clear-completed" onClick={clearCompleted}>
           Clear completed
         </button>

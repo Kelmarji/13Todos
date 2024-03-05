@@ -6,12 +6,12 @@ import TaskList from '../TaskList';
 import Footer from '../Footer';
 
 export default class App extends Component {
-  maxId = 100;
-
   state = {
+    maxId: 100,
     todosData: [],
     statusFilter: false,
     filteredTodos: [],
+    filter: 'All',
   };
 
   changeProp = (arr, id, prop) => {
@@ -41,7 +41,9 @@ export default class App extends Component {
     this.setState({
       filteredTodos: newTodosData,
       statusFilter: text !== 'All',
+      filter: text,
     });
+    console.log(this.state.filter);
   };
 
   deletedItem = (id) => {
@@ -56,20 +58,24 @@ export default class App extends Component {
   newItem(item) {
     const newItem = {
       label: item,
-      id: this.state.todosData.length + 1,
+      id: this.state.maxId,
       time: new Date().getTime(),
       edit: false,
     };
+    console.log(newItem.id);
     return newItem;
   }
 
   addItem = (item) => {
-    this.setState(({ todosData, filteredTodos }) => {
+    this.setState(({ todosData, filteredTodos, maxId }) => {
+      const maxIdNewNumber = maxId + 1;
       const newArr = [...todosData, this.newItem(item)];
       const newFilArr = [...filteredTodos, this.newItem(item)];
+      console.log(newArr, newFilArr);
       return {
         todosData: newArr,
-        filteredTodos: newFilArr,
+        filteredTodos: newArr,
+        maxId: maxIdNewNumber,
       };
     });
   };
@@ -132,7 +138,12 @@ export default class App extends Component {
           onToggleEdit={this.onToggleEdit}
           todoList={statusFilter ? filteredTodos : todosData}
         />
-        <Footer todoList={todosData} clearCompleted={this.clearCompleted} filterTodos={this.filterTodos} />
+        <Footer
+          filterSts={this.state.filter}
+          todoList={todosData}
+          clearCompleted={this.clearCompleted}
+          filterTodos={this.filterTodos}
+        />
       </div>
     );
   }

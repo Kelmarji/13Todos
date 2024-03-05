@@ -8,17 +8,24 @@ export default class TaskFilter extends Component {
   };
 
   render() {
-    const { filterTodos } = this.props;
+    const { filterTodos, filterStatus } = this.props;
+
     return (
       <ul className="filters">
         <li>
-          <button onClick={() => filterTodos('All')}>All</button>
+          <button className={filterStatus === 'All' ? 'selected' : ''} onClick={() => filterTodos('All')}>
+            All
+          </button>
         </li>
         <li>
-          <button onClick={() => filterTodos('Active')}>Active</button>
+          <button className={filterStatus === 'Active' ? 'selected' : ''} onClick={() => filterTodos('Active')}>
+            Active
+          </button>
         </li>
         <li>
-          <button onClick={() => filterTodos('Completed')}>Completed</button>
+          <button className={filterStatus === 'Completed' ? 'selected' : ''} onClick={() => filterTodos('Completed')}>
+            Completed
+          </button>
         </li>
       </ul>
     );
