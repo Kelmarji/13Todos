@@ -18,10 +18,6 @@ export default class Task extends Component {
             }}
           ></input>
         </div>
-        <div className="right-side">
-          <button className="icon icon-edit" onClick={onToggleEdit}></button>
-          <button className="icon icon-destroy" onClick={onDeleted}></button>
-        </div>
       </li>
     ) : (
       <li key={`todos${id}`} id={id} className={completed ? 'completed' : ''}>
