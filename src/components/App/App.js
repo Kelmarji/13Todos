@@ -54,21 +54,22 @@ export default class App extends Component {
     });
   };
 
-  newItem(item) {
+  newItem(item, timerTime) {
     const newItem = {
       label: item,
       id: this.state.maxId,
       time: new Date().getTime(),
       edit: false,
+      timer: timerTime,
     };
     return newItem;
   }
 
-  addItem = (item) => {
-    this.setState(({ todosData, filteredTodos, maxId }) => {
+  addItem = (item, timerTime) => {
+    this.setState(({ todosData, maxId }) => {
       const maxIdNewNumber = maxId + 1;
-      const newArr = [...todosData, this.newItem(item)];
-      const newFilArr = [...filteredTodos, this.newItem(item)];
+      const newArr = [...todosData, this.newItem(item, timerTime)];
+      console.log(newArr);
       return {
         todosData: newArr,
         filteredTodos: newArr,

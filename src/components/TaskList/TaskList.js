@@ -17,12 +17,13 @@ export default class TaskList extends Component {
 
   render() {
     const { todoList, onDeleted, onToggleCompleted, onToggleEdit, rename } = this.props;
-    const elements = todoList.map(({ label, id, completed, time, edit }) => {
+    const elements = todoList.map(({ label, id, completed, time, edit, timer }) => {
       return (
         <Task
           label={label}
           key={id}
           id={id}
+          timerTime={timer}
           time={formatDistanceToNow(time, { includeSeconds: true, addSuffix: true })}
           onDeleted={() => {
             onDeleted(id);

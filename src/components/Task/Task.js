@@ -3,7 +3,8 @@ import './Task.css';
 
 export default class Task extends Component {
   render() {
-    const { label, id, onDeleted, onToggleCompleted, completed, time, edited, onToggleEdit, rename } = this.props;
+    const { label, id, onDeleted, onToggleCompleted, completed, time, edited, onToggleEdit, rename, timerTime } =
+      this.props;
 
     return edited ? (
       <li key={`todos${id}`} id={id} className="editing">
@@ -21,17 +22,20 @@ export default class Task extends Component {
       </li>
     ) : (
       <li key={`todos${id}`} id={id} className={completed ? 'completed' : ''}>
-        <div className="view left-side" onClick={onToggleCompleted}>
-          <input
-            className="toggle"
-            type="checkbox"
-            checked={completed}
-            onChange={onToggleCompleted}
-            onClick={onToggleCompleted}
-          ></input>
+        <div className="view left-side">
+          <input className="toggle" type="checkbox" checked={completed} onChange={onToggleCompleted}></input>
           <label htmlFor="checkbox" key={`todos${id}`}>
-            <span className="description">{label}</span>
-            <span className="created">created {time}</span>
+            <span className="title" onClick={onToggleCompleted}>
+              {label}
+            </span>
+            <span className="description">
+              <button className="icon icon-play" />
+              <button className="icon icon-pause" />
+              {timerTime}
+            </span>
+            <span className="description" onClick={onToggleCompleted}>
+              created {time}
+            </span>
           </label>
         </div>
         <div className="right-side">
