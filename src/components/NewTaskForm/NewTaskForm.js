@@ -30,7 +30,7 @@ export default class NewTaskForm extends Component {
             }}
           />
           <input minLength={1} required className="new-todo" placeholder="Task" autoFocus />
-          <input type="number" min={0} className="new-todo-form__timer" placeholder="Min" autoFocus />
+          <input type="number" className="new-todo-form__timer" placeholder="Min" autoFocus />
           <input type="number" min={1} max={60} required className="new-todo-form__timer" placeholder="Sec" autoFocus />
         </form>
       </header>

@@ -456,3 +456,7 @@ input::-webkit-inner-spin-button {
   -webkit-appearance: none;
   margin: 0;
 }
+
+.marginleft {
+	margin-left: 10px;
+}

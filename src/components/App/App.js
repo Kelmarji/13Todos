@@ -69,7 +69,6 @@ export default class App extends Component {
     this.setState(({ todosData, maxId }) => {
       const maxIdNewNumber = maxId + 1;
       const newArr = [...todosData, this.newItem(item, timerTime)];
-      console.log(newArr);
       return {
         todosData: newArr,
         filteredTodos: newArr,
@@ -123,12 +122,37 @@ export default class App extends Component {
     }
   };
 
+  startTimer = (id, timeStart) => {
+    const itemId = this.state.todosData.findIndex((item) => item.id === id);
+    if (itemId !== -1) {
+      this.setState(({ todosData, filteredTodos }) => {
+        console.log(todosData);
+        if (timeStart > 0) {
+          return {
+            todosData: this.changeName(todosData, id, 'timer', timeStart),
+            filterTodos: this.changeName(filteredTodos, id, 'timer', timeStart),
+          };
+        }
+        return {
+          todosData: this.changeName(todosData, id, 'timer', 0),
+          filterTodos: this.changeName(filteredTodos, id, 'timer', 0),
+        };
+      });
+    }
+  };
+
+  stopTimer = (oldTime, id, newTime) => {
+    console.log(id, oldTime, newTime);
+  };
+
   render() {
     const { todosData, statusFilter, filteredTodos } = this.state;
     return (
       <div className="todoapp">
         <NewTaskForm addItem={this.addItem} />
         <TaskList
+          startTimer={this.startTimer}
+          stopTimer={this.stopTimer}
           rename={this.rename}
           logId={this.logId}
           onDeleted={this.deletedItem}
