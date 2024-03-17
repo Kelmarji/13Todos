@@ -12,7 +12,10 @@ export default class NewTaskForm extends Component {
             e.preventDefault();
             const [, label, min, sec] = e.target;
             console.log(label.value, min.value, sec.value);
-            this.props.addItem(label.value, min.value * 60 + sec.value);
+            const minutes = min.value * 60000;
+            const seconds = sec.value * 1000;
+            const timerValue = minutes + seconds;
+            this.props.addItem(label.value, timerValue);
             label.value = '';
             min.value = '';
             sec.value = '';
@@ -23,7 +26,6 @@ export default class NewTaskForm extends Component {
             onSubmit={(e) => {
               e.preventDefault();
               if (e.target.value !== undefined && e.target.value.length > 0) {
-                console.log(e);
                 this.props.addItem(e.target.value);
                 e.target.value = '';
               }

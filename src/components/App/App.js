@@ -61,6 +61,7 @@ export default class App extends Component {
       time: new Date().getTime(),
       edit: false,
       timer: timerTime,
+      timerStatus: true,
     };
     return newItem;
   }
@@ -122,11 +123,10 @@ export default class App extends Component {
     }
   };
 
-  startTimer = (id, timeStart) => {
+  timer = (id, timeStart) => {
     const itemId = this.state.todosData.findIndex((item) => item.id === id);
     if (itemId !== -1) {
       this.setState(({ todosData, filteredTodos }) => {
-        console.log(todosData);
         if (timeStart > 0) {
           return {
             todosData: this.changeName(todosData, id, 'timer', timeStart),
@@ -141,8 +141,13 @@ export default class App extends Component {
     }
   };
 
-  stopTimer = (oldTime, id, newTime) => {
-    console.log(id, oldTime, newTime);
+  timerChanger = (id) => {
+    this.setState(({ todosData, filteredTodos }) => {
+      return {
+        todosData: this.changeProp(todosData, id, 'timerStatus'),
+        filterTodos: this.changeProp(filteredTodos, id, 'timerStatus'),
+      };
+    });
   };
 
   render() {
@@ -151,8 +156,8 @@ export default class App extends Component {
       <div className="todoapp">
         <NewTaskForm addItem={this.addItem} />
         <TaskList
-          startTimer={this.startTimer}
-          stopTimer={this.stopTimer}
+          timeChanger={this.timerChanger}
+          startTimer={this.timer}
           rename={this.rename}
           logId={this.logId}
           onDeleted={this.deletedItem}

@@ -16,10 +16,13 @@ export default class TaskList extends Component {
   };
 
   render() {
-    const { todoList, onDeleted, onToggleCompleted, onToggleEdit, rename, startTimer, stopTimer } = this.props;
-    const elements = todoList.map(({ label, id, completed, time, edit, timer }) => {
+    const { todoList, onDeleted, onToggleCompleted, onToggleEdit, rename, startTimer, stopTimer, timeChanger } =
+      this.props;
+    const elements = todoList.map(({ label, id, completed, time, edit, timer, timerStatus }) => {
       return (
         <Task
+          timeChanger={timeChanger}
+          timerStatus={timerStatus}
           startTimer={startTimer}
           stopTimer={stopTimer}
           label={label}

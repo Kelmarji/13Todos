@@ -16,10 +16,17 @@ const Task = (props) => {
     rename,
     timerTime,
     startTimer,
-    // stopTimer,
+    timerStatus,
+    timeChanger,
   } = props;
 
   const [timer, setTimer] = useState(Number(timerTime));
+  function millisecondsToMMSS(milliseconds) {
+    const totalSeconds = Math.floor(milliseconds / 1000);
+    const minutes = Math.floor(totalSeconds / 60);
+    const seconds = totalSeconds % 60;
+    return `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+  }
 
   function funcTimer(ids, str, oldtime) {
     if (str === 'play') {
@@ -29,8 +36,9 @@ const Task = (props) => {
             clearInterval(timeToComplet);
             setTimer(0);
           }
+          console.log(timing);
           startTimer(ids, timing);
-          return timing - 1;
+          return timing - 1000;
         });
       }, 1000);
     } else {
@@ -63,21 +71,26 @@ const Task = (props) => {
             {label}
           </span>
           <span className="description">
-            <button
-              className="icon icon-play"
-              onClick={() => {
-                funcTimer(id, 'play', timerTime);
-              }}
-            />
-            <button
-              className="icon icon-pause"
-              id={id}
-              onClick={() => {
-                funcTimer(id, 'pause', timerTime);
-              }}
-            />
+            {timerStatus ? (
+              <button
+                className="icon icon-play"
+                onClick={() => {
+                  timeChanger(id);
+                  funcTimer(id, 'play', timerTime);
+                }}
+              />
+            ) : (
+              <button
+                className="icon icon-pause"
+                id={id}
+                onClick={() => {
+                  timeChanger(id);
+                  funcTimer(id, 'pause', timerTime);
+                }}
+              />
+            )}
             <span className="description marginleft" data-size="10px">
-              {timer > 0 ? timer : 0}
+              {timer > 0 ? millisecondsToMMSS(timer) : 0}
             </span>
           </span>
           <span className="description" onClick={onToggleCompleted}>
@@ -87,7 +100,13 @@ const Task = (props) => {
       </div>
       <div className="right-side">
         <button className="icon icon-edit" onClick={onToggleEdit}></button>
-        <button className="icon icon-destroy" onClick={onDeleted}></button>
+        <button
+          className="icon icon-destroy"
+          onClick={() => {
+            clearInterval(timeToComplet);
+            onDeleted();
+          }}
+        ></button>
       </div>
     </li>
   );
