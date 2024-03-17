@@ -1,8 +1,6 @@
 import React, { useState } from 'react';
 import './Task.css';
 
-let timeToComplet;
-
 const Task = (props) => {
   const {
     label,
@@ -21,6 +19,7 @@ const Task = (props) => {
   } = props;
 
   const [timer, setTimer] = useState(Number(timerTime));
+  const [intervals, setIntervals] = useState({});
   function millisecondsToMMSS(milliseconds) {
     const totalSeconds = Math.floor(milliseconds / 1000);
     const minutes = Math.floor(totalSeconds / 60);
@@ -30,10 +29,10 @@ const Task = (props) => {
 
   function funcTimer(ids, str, oldtime) {
     if (str === 'play') {
-      timeToComplet = setInterval(() => {
+      const newInterval = setInterval(() => {
         setTimer((timing) => {
           if (timing <= 0) {
-            clearInterval(timeToComplet);
+            clearInterval(newInterval);
             setTimer(0);
           }
           console.log(timing);
@@ -41,10 +40,20 @@ const Task = (props) => {
           return timing - 1000;
         });
       }, 1000);
+
+      setIntervals((prevIntervals) => ({
+        ...prevIntervals,
+        [ids]: newInterval,
+      }));
     } else {
-      clearInterval(timeToComplet);
+      clearInterval(intervals[ids]);
       setTimer(timer);
       startTimer(ids, oldtime);
+
+      setIntervals((prevIntervals) => ({
+        ...prevIntervals,
+        [ids]: null,
+      }));
     }
   }
 
@@ -103,10 +112,12 @@ const Task = (props) => {
         <button
           className="icon icon-destroy"
           onClick={() => {
-            clearInterval(timeToComplet);
+            if (intervals[id]) {
+              clearInterval(intervals[id]);
+            }
             onDeleted();
           }}
-        ></button>
+        />
       </div>
     </li>
   );
