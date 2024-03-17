@@ -11,7 +11,6 @@ export default class NewTaskForm extends Component {
           onSubmit={(e) => {
             e.preventDefault();
             const [, label, min, sec] = e.target;
-            console.log(label.value, min.value, sec.value);
             const minutes = min.value * 60000;
             const seconds = sec.value * 1000;
             const timerValue = minutes + seconds;

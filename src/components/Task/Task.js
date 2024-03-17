@@ -35,7 +35,6 @@ const Task = (props) => {
             clearInterval(newInterval);
             setTimer(0);
           }
-          console.log(timing);
           startTimer(ids, timing);
           return timing - 1000;
         });
