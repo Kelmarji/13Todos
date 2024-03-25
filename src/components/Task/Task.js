@@ -78,29 +78,31 @@ const Task = (props) => {
           <span className="title" onClick={onToggleCompleted}>
             {label}
           </span>
-          <span className="description">
-            {timerStatus ? (
-              <button
-                className="icon icon-play"
-                onClick={() => {
-                  timeChanger(id);
-                  funcTimer(id, 'play', timerTime);
-                }}
-              />
-            ) : (
-              <button
-                className="icon icon-pause"
-                id={id}
-                onClick={() => {
-                  timeChanger(id);
-                  funcTimer(id, 'pause', timerTime);
-                }}
-              />
-            )}
-            <span className="description marginleft" data-size="10px">
-              {timer > 0 ? millisecondsToMMSS(timer) : 0}
+          {timerTime ? (
+            <span className="description">
+              {timerStatus ? (
+                <button
+                  className="icon icon-play"
+                  onClick={() => {
+                    timeChanger(id);
+                    funcTimer(id, 'play', timerTime);
+                  }}
+                />
+              ) : (
+                <button
+                  className="icon icon-pause"
+                  id={id}
+                  onClick={() => {
+                    timeChanger(id);
+                    funcTimer(id, 'pause', timerTime);
+                  }}
+                />
+              )}
+              <span className="description marginleft" data-size="10px">
+                {timer > 0 ? millisecondsToMMSS(timer) : 0}
+              </span>
             </span>
-          </span>
+          ) : null}
           <span className="description" onClick={onToggleCompleted}>
             created {time}
           </span>
