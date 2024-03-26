@@ -1,5 +1,5 @@
 /* eslint-disable class-methods-use-this */
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 
 import NewTaskForm from '../NewTaskForm';
 import TaskList from '../TaskList';
@@ -22,20 +22,6 @@ const App = () => {
     const oldItem = arr[itemId];
     const newItem = { ...oldItem, [prop]: newText, completed: false };
     return [...arr.slice(0, itemId), newItem, ...arr.slice(itemId + 1)];
-  };
-
-  const filterTodo = (text) => {
-    let todosList = [];
-    if (text === 'Completed') {
-      todosList = todosData.filter((item) => item.completed);
-    }
-    if (text === 'Active') {
-      todosList = todosData.filter((item) => !item.completed);
-    }
-    if (text === 'All') {
-      todosList = todosData;
-    }
-    return todosList;
   };
 
   const deletedItem = (id) => {
@@ -77,49 +63,27 @@ const App = () => {
   const rename = (id, newName) => {
     const itemId = todosData.findIndex((item) => item.id === id);
     const newTodo = changeName(todosData, id, 'label', newName);
-    if (itemId !== -1) {
-      SetTodosData(newTodo);
-      SetTodosData(changeProp(newTodo, id, 'edit'));
-    }
+    console.log(newTodo);
+    SetTodosData(newTodo);
+    SetTodosData(changeProp(newTodo, id, 'edit'));
   };
 
   const timer = (id, timeStart) => {
-    const itemId = todosData.findIndex((item) => item.id === id);
-    if (itemId !== -1) {
-      if (timeStart > 0) {
-        SetTodosData(changeName(todosData, id, 'timer', timeStart));
-      }
-      SetTodosData(changeProp(todosData, id, 'timerStatus'));
-    }
+    const newItemTime = changeName(todosData, id, 'timer', timeStart);
+    SetTodosData(newItemTime);
   };
-
-  const timerChanger = (id) => {
-    SetTodosData(changeProp(todosData, id, 'timerStatus'));
-  };
-
-  useEffect(() => {
-    filterTodo(filter);
-  }, [filter, todosData]);
-
-  useEffect(() => {
-    timer();
-  }, [todosData]);
-
-  useEffect(() => {
-    rename();
-  }, [todosData]);
 
   return (
     <div className="todoapp">
       <NewTaskForm addItem={addItem} />
       <TaskList
-        timeChanger={timerChanger}
         startTimer={timer}
         rename={rename}
         onDeleted={deletedItem}
         onToggleCompleted={onToggleCompleted}
         onToggleEdit={onToggleEdit}
-        todoList={filterTodo(filter)} // тут ошибка
+        filter={filter}
+        todoList={todosData} // тут ошибка
       />
       <Footer filterSts={filter} todoList={todosData} clearCompleted={clearCompleted} filterTodos={setFilter} />
     </div>

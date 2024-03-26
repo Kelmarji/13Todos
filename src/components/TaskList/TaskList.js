@@ -3,12 +3,26 @@ import { formatDistanceToNow } from 'date-fns';
 
 import Task from '../Task/Task';
 
+const filterTodo = (arr, text) => {
+  let todosList = [];
+  if (text === 'Completed') {
+    todosList = arr.filter((item) => item.completed);
+  }
+  if (text === 'Active') {
+    todosList = arr.filter((item) => !item.completed);
+  }
+  if (text === 'All') {
+    todosList = arr;
+  }
+  return todosList;
+};
+
 const TaskList = (props) => {
-  const { todoList, onDeleted, onToggleCompleted, onToggleEdit, rename, startTimer, stopTimer, timeChanger } = props;
-  const elements = todoList.map(({ label, id, completed, time, edit, timer, timerStatus }) => {
+  const { todoList, onDeleted, onToggleCompleted, onToggleEdit, rename, startTimer, stopTimer, filter } = props;
+
+  const elements = filterTodo(todoList, filter).map(({ label, id, completed, time, edit, timer, timerStatus }) => {
     return (
       <Task
-        timeChanger={timeChanger}
         timerStatus={timerStatus}
         startTimer={startTimer}
         stopTimer={stopTimer}

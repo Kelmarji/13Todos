@@ -14,11 +14,10 @@ const Task = (props) => {
     rename,
     timerTime,
     startTimer,
-    timerStatus,
-    timeChanger,
   } = props;
 
   const [timer, setTimer] = useState(Number(timerTime));
+  const [timerSts, setTimerSts] = useState(false);
   const [intervals, setIntervals] = useState({});
   function millisecondsToMMSS(milliseconds) {
     const totalSeconds = Math.floor(milliseconds / 1000);
@@ -27,8 +26,9 @@ const Task = (props) => {
     return `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
   }
 
-  function funcTimer(ids, str, oldtime) {
+  function funcTimer(ids, str) {
     if (str === 'play') {
+      setTimerSts(true);
       const newInterval = setInterval(() => {
         setTimer((timing) => {
           if (timing <= 0) {
@@ -45,9 +45,10 @@ const Task = (props) => {
         [ids]: newInterval,
       }));
     } else {
+      setTimerSts(false);
       clearInterval(intervals[ids]);
       setTimer(timer);
-      startTimer(ids, oldtime);
+      startTimer(ids, timer);
 
       setIntervals((prevIntervals) => ({
         ...prevIntervals,
@@ -80,21 +81,19 @@ const Task = (props) => {
           </span>
           {timerTime ? (
             <span className="description">
-              {timerStatus ? (
-                <button
-                  className="icon icon-play"
-                  onClick={() => {
-                    timeChanger(id);
-                    funcTimer(id, 'play', timerTime);
-                  }}
-                />
-              ) : (
+              {timerSts ? (
                 <button
                   className="icon icon-pause"
                   id={id}
                   onClick={() => {
-                    timeChanger(id);
                     funcTimer(id, 'pause', timerTime);
+                  }}
+                />
+              ) : (
+                <button
+                  className="icon icon-play"
+                  onClick={() => {
+                    funcTimer(id, 'play', timerTime);
                   }}
                 />
               )}
