@@ -61,7 +61,6 @@ const App = () => {
   };
 
   const rename = (id, newName) => {
-    const itemId = todosData.findIndex((item) => item.id === id);
     const newTodo = changeName(todosData, id, 'label', newName);
     console.log(newTodo);
     SetTodosData(newTodo);
@@ -69,7 +68,9 @@ const App = () => {
   };
 
   const timer = (id, timeStart) => {
+    const itemId = todosData.findIndex((item) => item.id === id);
     const newItemTime = changeName(todosData, id, 'timer', timeStart);
+    console.log(newItemTime[itemId]);
     SetTodosData(newItemTime);
   };
 
