@@ -28,7 +28,7 @@ const Task = (props) => {
     <li key={`todos${id}`} id={id} className="editing">
       <div className="view" onClick={onToggleCompleted}>
         <input
-          value={label}
+          placeholder={label}
           type="text"
           className="edit"
           onKeyDown={(e) => {

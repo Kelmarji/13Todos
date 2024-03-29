@@ -1,3 +1,3 @@
-https://todotimer-gray.vercel.app/
-https://todotimer-kelmars-projects.vercel.app/
-https://todotimer-kelmarji-kelmars-projects.vercel.app/
+functimercomp.vercel.app
+https://functimercomp-kelmars-projects.vercel.app/
+https://functimercomp-kelmarji-kelmars-projects.vercel.app/
