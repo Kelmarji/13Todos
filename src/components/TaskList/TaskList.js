@@ -18,11 +18,14 @@ const filterTodo = (arr, text) => {
 };
 
 const TaskList = (props) => {
-  const { todoList, onDeleted, onToggleCompleted, onToggleEdit, rename, startTimer, stopTimer, filter } = props;
+  const { todoList, onDeleted, onToggleCompleted, onToggleEdit, rename, startTimer, stopTimer, filter, play, pause } =
+    props;
 
   const elements = filterTodo(todoList, filter).map(({ label, id, completed, time, edit, timer, timerStatus }) => {
     return (
       <Task
+        pause={pause}
+        play={play}
         timerStatus={timerStatus}
         startTimer={startTimer}
         stopTimer={stopTimer}

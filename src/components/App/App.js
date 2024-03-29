@@ -25,31 +25,39 @@ const App = () => {
   };
 
   const deletedItem = (id) => {
+    const itemId = todosData.findIndex((item) => item.id === id);
+    if (itemId === -1) return;
+    const task = todosData[itemId];
+
+    // Очистка интервала таймера
+    if (task.timerId) {
+      clearInterval(task.timerId);
+    }
+
     const newList = todosData.filter((item) => item.id !== id);
     SetTodosData(newList);
   };
 
-  const newItem = (item, timer) => {
+  const newItem = (label, timer) => {
     const newTodo = {
-      label: item,
+      label,
       id: maxId,
       time: new Date().getTime(),
       edit: false,
       timer,
-      timerStatus: true,
+      timerStatus: false,
     };
     return newTodo;
   };
 
   const addItem = (item, timerTime) => {
-    const id = maxId + 1;
-    setMaxId(id);
-    const newArr = [...todosData, newItem(item, timerTime)];
-    SetTodosData(newArr);
+    setMaxId((id) => id + 1);
+    const newTodo = newItem(item, timerTime);
+    SetTodosData((prevState) => [...prevState, newTodo]);
   };
 
   const onToggleCompleted = (id) => {
-    SetTodosData(changeProp(todosData, id, 'completed'));
+    SetTodosData((arr) => changeProp(arr, id, 'completed'));
   };
 
   const clearCompleted = () => {
@@ -57,34 +65,67 @@ const App = () => {
   };
 
   const onToggleEdit = (id) => {
-    SetTodosData(changeProp(todosData, id, 'edit'));
+    SetTodosData((arr) => changeProp(arr, id, 'edit'));
   };
 
   const rename = (id, newName) => {
-    const newTodo = changeName(todosData, id, 'label', newName);
-    console.log(newTodo);
-    SetTodosData(newTodo);
-    SetTodosData(changeProp(newTodo, id, 'edit'));
+    SetTodosData((arr) => changeName(arr, id, 'label', newName));
+    SetTodosData((arr) => changeProp(arr, id, 'edit'));
   };
 
-  const timer = (id, timeStart) => {
+  const playTimer = (id, action) => {
     const itemId = todosData.findIndex((item) => item.id === id);
-    const newItemTime = changeName(todosData, id, 'timer', timeStart);
-    console.log(newItemTime[itemId]);
-    SetTodosData(newItemTime);
+    if (itemId === -1) return;
+    let task = { ...todosData[itemId] };
+    const { timer, timerStatus } = task;
+
+    if (action === 'pause') {
+      if (task.timer <= 0 || !timerStatus) return;
+      clearInterval(task.timerId);
+
+      SetTodosData((arr) => {
+        task.timerStatus = false;
+        task.timerId = null;
+        return arr.with(itemId, task);
+      });
+      return;
+    }
+
+    if (timerStatus || timer === 0) return;
+
+    const timerId = setInterval(() => {
+      SetTodosData((arr) => {
+        task = arr[itemId];
+        if (!task) {
+          clearInterval(timerId);
+          return arr;
+        }
+        task.timer -= 1000;
+        if (task.timer === 0) clearInterval(timerId);
+        return task.timer === 0
+          ? arr.with(itemId, { ...task, timerStatus: false, timerId: null, completed: true })
+          : arr.with(itemId, { ...task, timerStatus: true });
+      });
+    }, 1000);
+
+    SetTodosData((arr) => {
+      task.timerStatus = true;
+      task.timerId = timerId;
+      return arr.with(itemId, task);
+    });
   };
 
   return (
     <div className="todoapp">
       <NewTaskForm addItem={addItem} />
       <TaskList
-        startTimer={timer}
+        play={playTimer}
         rename={rename}
         onDeleted={deletedItem}
         onToggleCompleted={onToggleCompleted}
         onToggleEdit={onToggleEdit}
         filter={filter}
-        todoList={todosData} // тут ошибка
+        todoList={todosData}
       />
       <Footer filterSts={filter} todoList={todosData} clearCompleted={clearCompleted} filterTodos={setFilter} />
     </div>

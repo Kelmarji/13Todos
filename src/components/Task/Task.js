@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import './Task.css';
 
 const Task = (props) => {
@@ -13,54 +13,24 @@ const Task = (props) => {
     onToggleEdit,
     rename,
     timerTime,
-    startTimer,
+    timerStatus,
+    play,
   } = props;
 
-  const [timer, setTimer] = useState(Number(timerTime));
-  const [timerSts, setTimerSts] = useState(false);
-  const [intervals, setIntervals] = useState({});
-  function millisecondsToMMSS(milliseconds) {
+  const millisecondsToMMSS = (milliseconds) => {
     const totalSeconds = Math.floor(milliseconds / 1000);
     const minutes = Math.floor(totalSeconds / 60);
     const seconds = totalSeconds % 60;
     return `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
-  }
+  };
 
-  function funcTimer(ids, str) {
-    if (str === 'play') {
-      setTimerSts(true);
-      const newInterval = setInterval(() => {
-        setTimer((timing) => {
-          if (timing <= 0) {
-            clearInterval(newInterval);
-            setTimer(0);
-          }
-          startTimer(ids, timing);
-          return timing - 1000;
-        });
-      }, 1000);
-
-      setIntervals((prevIntervals) => ({
-        ...prevIntervals,
-        [ids]: newInterval,
-      }));
-    } else {
-      setTimerSts(false);
-      clearInterval(intervals[ids]);
-      setTimer(timer);
-      startTimer(ids, timer);
-
-      setIntervals((prevIntervals) => ({
-        ...prevIntervals,
-        [ids]: null,
-      }));
-    }
-  }
+  console.log(timerTime, timerStatus);
 
   return edited ? (
     <li key={`todos${id}`} id={id} className="editing">
       <div className="view" onClick={onToggleCompleted}>
         <input
+          value={label}
           type="text"
           className="edit"
           onKeyDown={(e) => {
@@ -81,24 +51,13 @@ const Task = (props) => {
           </span>
           {timerTime ? (
             <span className="description">
-              {timerSts ? (
-                <button
-                  className="icon icon-pause"
-                  id={id}
-                  onClick={() => {
-                    funcTimer(id, 'pause', timerTime);
-                  }}
-                />
+              {timerStatus ? (
+                <button className="icon icon-pause" id={id} onClick={() => play(id, 'pause')} />
               ) : (
-                <button
-                  className="icon icon-play"
-                  onClick={() => {
-                    funcTimer(id, 'play', timerTime);
-                  }}
-                />
+                <button className="icon icon-play" onClick={() => play(id, 'play')} />
               )}
               <span className="description marginleft" data-size="10px">
-                {timer > 0 ? millisecondsToMMSS(timer) : 0}
+                {timerTime > 0 ? millisecondsToMMSS(timerTime) : 0}
               </span>
             </span>
           ) : null}
@@ -112,9 +71,6 @@ const Task = (props) => {
         <button
           className="icon icon-destroy"
           onClick={() => {
-            if (intervals[id]) {
-              clearInterval(intervals[id]);
-            }
             onDeleted();
           }}
         />
