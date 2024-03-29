@@ -24,8 +24,6 @@ const Task = (props) => {
     return `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
   };
 
-  console.log(timerTime, timerStatus);
-
   return edited ? (
     <li key={`todos${id}`} id={id} className="editing">
       <div className="view" onClick={onToggleCompleted}>
