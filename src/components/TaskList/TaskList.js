@@ -1,45 +1,56 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
+import React from 'react';
 import { formatDistanceToNow } from 'date-fns';
 
 import Task from '../Task/Task';
 
-export default class TaskList extends Component {
-  static defaultProps = {
-    todoList: [],
-  };
-
-  static propTypes = {
-    todoList: PropTypes.array,
-    onDeleted: PropTypes.func,
-    onToggleCompleted: PropTypes.func,
-  };
-
-  render() {
-    const { todoList, onDeleted, onToggleCompleted, onToggleEdit, rename } = this.props;
-    const elements = todoList.map(({ label, id, completed, time, edit }) => {
-      return (
-        <Task
-          label={label}
-          key={id}
-          id={id}
-          time={formatDistanceToNow(time, { includeSeconds: true, addSuffix: true })}
-          onDeleted={() => {
-            onDeleted(id);
-          }}
-          onToggleCompleted={() => {
-            onToggleCompleted(id);
-          }}
-          onToggleEdit={() => {
-            onToggleEdit(id);
-          }}
-          rename={rename}
-          edited={edit}
-          completed={completed}
-        />
-      );
-    });
-
-    return <ul className="todo-list">{elements}</ul>;
+const filterTodo = (arr, text) => {
+  let todosList = [];
+  if (text === 'Completed') {
+    todosList = arr.filter((item) => item.completed);
   }
-}
+  if (text === 'Active') {
+    todosList = arr.filter((item) => !item.completed);
+  }
+  if (text === 'All') {
+    todosList = arr;
+  }
+  return todosList;
+};
+
+const TaskList = (props) => {
+  const { todoList, onDeleted, onToggleCompleted, onToggleEdit, rename, startTimer, stopTimer, filter, play, pause } =
+    props;
+
+  const elements = filterTodo(todoList, filter).map(({ label, id, completed, time, edit, timer, timerStatus }) => {
+    return (
+      <Task
+        pause={pause}
+        play={play}
+        timerStatus={timerStatus}
+        startTimer={startTimer}
+        stopTimer={stopTimer}
+        label={label}
+        key={id}
+        id={id}
+        timerTime={timer}
+        time={formatDistanceToNow(time, { includeSeconds: true, addSuffix: true })}
+        onDeleted={() => {
+          onDeleted(id);
+        }}
+        onToggleCompleted={() => {
+          onToggleCompleted(id);
+        }}
+        onToggleEdit={() => {
+          onToggleEdit(id);
+        }}
+        rename={rename}
+        edited={edit}
+        completed={completed}
+      />
+    );
+  });
+
+  return <ul className="todo-list">{elements}</ul>;
+};
+
+export default TaskList;
